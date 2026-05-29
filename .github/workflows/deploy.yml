@@ -37,7 +37,7 @@ jobs:
             set -e
             
             echo "=== Deploying ton618-status ==="
-            cd /home/ton618/ton618-status
+            cd /opt/ton618/ton618-status
             
             echo "Pulling latest changes..."
             git pull origin main
