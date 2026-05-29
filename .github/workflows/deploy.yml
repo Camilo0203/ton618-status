@@ -29,9 +29,23 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
+          command_timeout: 30m
           script: |
+            set -e
+            
+            echo "=== Deploying ton618-status ==="
             cd /home/ton618/ton618-status
+            
+            echo "Pulling latest changes..."
             git pull origin main
+            
+            echo "Installing dependencies..."
             npm ci
+            
+            echo "Building project..."
             npm run build
+            
+            echo "Restarting ton618-status..."
             pm2 restart ton618-status || pm2 start npm --name "ton618-status" -- start:prod
+            
+            echo "=== Deploy completed successfully ==="
